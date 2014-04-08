@@ -1,4 +1,8 @@
-## Routington [![Build Status](https://travis-ci.org/jonathanong/routington.png)](https://travis-ci.org/jonathanong/routington)
+## Routington [![Build Status](https://travis-ci.org/kaelzhang/node-tour.png)](https://travis-ci.org/kaelzhang/node-tour)
+
+This is a slightly altered version of [routington](https://github.com/jonathanong/routington), with more backward compatibility and cortex support.
+
+****
 
 Routington is a [trie](http://en.wikipedia.org/wiki/Trie)-based URL router.
 Its goal is only to define and match URLs.
