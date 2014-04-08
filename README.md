@@ -1,10 +1,10 @@
-## Routington [![Build Status](https://travis-ci.org/kaelzhang/node-tour.png)](https://travis-ci.org/kaelzhang/node-tour)
+## Tour [![Build Status](https://travis-ci.org/kaelzhang/node-tour.png)](https://travis-ci.org/kaelzhang/node-tour)
 
 This is a slightly altered version of [routington](https://github.com/jonathanong/routington), with more backward compatibility and cortex support.
 
 ****
 
-Routington is a [trie](http://en.wikipedia.org/wiki/Trie)-based URL router.
+Tour is a [trie](http://en.wikipedia.org/wiki/Trie)-based URL router.
 Its goal is only to define and match URLs.
 It does not handle methods, headers, controllers, views, etc., in anyway.
 It is faster than traditional, linear, regular expression-matching routers, although insignficantly,
@@ -20,11 +20,11 @@ Implementations:
 
 ### API
 
-#### node Node = Routington()
+#### node Node = Tour()
 
 ```js
-var routington = require('routington')
-var router = routington()
+var tour = require('tour')
+var router = tour()
 ```
 
 `router` is the root `Node` in the trie. All `node`s will have `router` as furthest ancestor.
@@ -44,7 +44,7 @@ Every node on a tree is an instance of `Node`. You only construct the root. A `n
 #### nodes []Node = router.define(route)
 
 ```js
-var nodes = routington.define('/:identity(page|petition)/:id([0-9a-f]{24})')
+var nodes = tour.define('/:identity(page|petition)/:id([0-9a-f]{24})')
 ```
 
 - `route` is a definition of a route and is an extension of Express' routing syntax.
@@ -85,13 +85,13 @@ var match = router.match('/page/taylorswift')
 - `node` - The matched node.
   Will always have `name.string === ''`.
 
-### Building a Router on top of Routington
+### Building a Router on top of Tour
 
 Each URL you define creates a node,
 and you are free to do whatever you'd like with each node as long you don't overwrite any prototype properties (basically just `define`, `match`, and `parse`).
-Adding any features to routington shouldn't be necessary.
+Adding any features to tour shouldn't be necessary.
 
-For example, suppose you want to attach callbacks to a node by extending routington:
+For example, suppose you want to attach callbacks to a node by extending tour:
 
 ```js
 router.get('/:id/:controller', function (req, res, next) {
