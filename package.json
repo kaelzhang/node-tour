@@ -1,5 +1,5 @@
 {
-  "name": "routington",
+  "name": "tour",
   "description": "Trie-based URL Routing",
   "version": "0.1.3",
   "devDependencies": {
@@ -18,11 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jonathanong/routington.git"
+    "url": "https://github.com/kaelzhang/node-tour.git"
   },
   "bugs": {
-    "url": "https://github.com/jonathanong/routington/issues",
+    "url": "https://github.com/kaelzhang/node-tour/issues",
     "email": "me@jongleberry.com"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "cortex": {
+    "dependencies": {
+      "util": "~1.0.0"
+    },
+    "asyncDependencies": {},
+    "devDependencies": {},
+    "scripts": {}
+  }
 }
