@@ -7,6 +7,14 @@
     "should": "*",
     "matcha": "*"
   },
+  "keywords": [
+    "route",
+    "router",
+    "routing",
+    "match",
+    "trie",
+    "url"
+  ],
   "scripts": {
     "test": "make test"
   },
