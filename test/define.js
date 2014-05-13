@@ -1,191 +1,191 @@
 var assert = require('assert')
 
-var routington = require('../')
+var routington = require('../index')
 
 describe('Route definitions', function () {
   it('should create the root', function () {
     var router = routington()
-    router.should.be.an.instanceof(routington)
+    assert(router instanceof routington)
 
     var routes = router.define('')
-    routes.should.have.length(1)
+    assert.equal(routes.length, 1)
 
     var route = routes[0]
-    route.should.be.an.instanceof(routington)
-    route.string.should.equal('')
-    route.name.should.equal('')
-    route.parent.should.equal(router)
+    assert(route instanceof routington)
+    assert.equal(route.string, '')
+    assert.equal(route.name, '')
+    assert.equal(route.parent, router)
 
-    router.child[''].should.equal(route)
+    assert(router.child[''], route)
 
     var routes2 = router.define('/')
-    routes2.should.have.length(1)
-    routes2[0].parent.should.equal(route)
+    assert(routes2.length, 1)
+    assert.equal(routes2[0].parent, route)
   })
 
   it('should create a first level child', function () {
     var router = routington()
 
     var routes = router.define('/asdf')
-    routes.should.have.length(1)
+    assert(routes.length, 1)
 
     var route = routes[0]
-    route.string.should.equal('asdf')
-    route.name.should.equal('')
-    route.parent.parent.should.equal(router)
-    route.parent.child['asdf'].should.equal(route)
+    assert.equal(route.string, 'asdf')
+    assert.equal(route.name, '')
+    assert.equal(route.parent.parent, router)
+    assert.equal(route.parent.child['asdf'], route)
 
     route = route.parent
-    route.string.should.equal('')
-    route.name.should.equal('')
-    route.parent.should.equal(router)
+    assert.equal(route.string, '')
+    assert.equal(route.name, '')
+    assert.equal(route.parent, router)
   })
 
   it('should create a second level child', function () {
     var router = routington()
 
     var routes = router.define('/asdf/wqer')
-    routes.should.have.length(1)
+    assert.equal(routes.length, 1)
 
     var route = routes[0]
-    route.string.should.equal('wqer')
+    assert.equal(route.string, 'wqer')
 
     var parent = route.parent
-    parent.string.should.equal('asdf')
-    parent.parent.string.should.equal('')
-    parent.parent.parent.should.equal(router)
+    assert.equal(parent.string, 'asdf')
+    assert.equal(parent.parent.string, '')
+    assert.equal(parent.parent.parent, router)
   })
 
   it('should define a named route', function () {
     var router = routington()
 
     var routes = router.define('/:id')
-    routes.should.have.length(1)
+    assert.equal(routes.length, 1)
 
     var route = routes[0]
-    route.name.should.equal('id')
+    assert.equal(route.name, 'id')
 
     var parent = route.parent
-    parent.string.should.equal('')
+    assert.equal(parent.string, '')
   })
 
   it('should define a regex route', function () {
     var router = routington()
 
     var routes = router.define('/:id(\\w{3,30})')
-    routes.should.have.length(1)
+    assert.equal(routes.length, 1)
 
     var route = routes[0]
-    route.name.should.equal('id')
-    route.regex.toString().should.equal('/^(\\w{3,30})$/i')
-    route.regex.test('asd').should.be.ok
-    route.regex.test('a').should.not.be.ok
+    assert.equal(route.name, 'id')
+    assert.equal(route.regex.toString(), '/^(\\w{3,30})$/i')
+    assert.ok(route.regex.test('asd'))
+    assert.ok(!route.regex.test('a'))
   })
 
   it('should define multiple regex routes', function () {
     var router = routington()
 
     var routes = router.define('/:id(\\w{3,30}|[0-9a-f]{24})')
-    routes.should.have.length(1)
+    assert.equal(routes.length, 1)
 
     var route = routes[0]
-    route.name.should.equal('id')
-    route.regex.toString().should.equal('/^(\\w{3,30}|[0-9a-f]{24})$/i')
-    route.regex.test('asdf').should.be.ok
-    route.regex.test('1234123412341234').should.be.ok
-    route.regex.test('a').should.not.be.ok
+    assert.equal(route.name, 'id')
+    assert.equal(route.regex.toString(),'/^(\\w{3,30}|[0-9a-f]{24})$/i')
+    assert.ok(route.regex.test('asdf'))
+    assert.ok(route.regex.test('1234123412341234'))
+    assert.ok(!route.regex.test('a'))
   })
 
   it('should define multiple unnamed regex routes', function () {
     var router = routington()
 
     var routes = router.define('/(\\w{3,30}|[0-9a-f]{24})')
-    routes.should.have.length(1)
+    assert.equal(routes.length, 1)
 
     var route = routes[0]
-    route.name.should.equal('')
-    route.regex.toString().should.equal('/^(\\w{3,30}|[0-9a-f]{24})$/i')
-    route.regex.test('asdf').should.be.ok
-    route.regex.test('1234123412341234').should.be.ok
-    route.regex.test('a').should.not.be.ok
+    assert.equal(route.name, '')
+    assert.equal(route.regex.toString(), '/^(\\w{3,30}|[0-9a-f]{24})$/i')
+    assert(route.regex.test('asdf'))
+    assert(route.regex.test('1234123412341234'))
+    assert.ok(!route.regex.test('a'))
   })
 
   it('should define multiple string routes', function () {
     var router = routington()
 
     var routes = router.define('/asdf|qwer')
-    routes.should.have.length(2)
+    assert.equal(routes.length, 2)
 
     var route1 = routes[0]
-    route1.name.should.equal('')
-    route1.string.should.equal('asdf')
+    assert.equal(route1.name, '')
+    assert.equal(route1.string, 'asdf')
 
     var route2 = routes[1]
-    route2.name.should.equal('')
-    route2.string.should.equal('qwer')
+    assert.equal(route2.name, '')
+    assert.equal(route2.string, 'qwer')
   })
 
   it('should define multiple string routes using regex', function () {
     var router = routington()
 
     var routes = router.define('/:id(asdf|qwer)')
-    routes.should.have.length(2)
+    assert.equal(routes.length, 2)
 
     var route1 = routes[0]
-    route1.name.should.equal('id')
-    route1.string.should.equal('asdf')
+    assert.equal(route1.name, 'id')
+    assert.equal(route1.string, 'asdf')
 
     var route2 = routes[1]
-    route2.name.should.equal('id')
-    route2.string.should.equal('qwer')
+    assert.equal(route2.name, 'id')
+    assert.equal(route2.string, 'qwer')
   })
 
   it('should not duplicate string routes', function () {
     var router = routington()
 
     var routes2 = router.define('/asdf')
-    routes2.should.have.length(1)
+    assert.equal(routes2.length, 1)
     var route2 = routes2[0]
 
     var routes1 = router.define('/:id(asdf)')
-    routes1.should.have.length(1)
+    assert.equal(routes1.length, 1)
     var route1 = routes1[0]
 
-    route1.should.equal(route2)
-    route1.name.should.equal('')
-    route2.name.should.equal('')
+    assert.equal(route1, route2)
+    assert.equal(route1.name, '')
+    assert.equal(route2.name, '')
   })
 
   it('should multiply every child', function () {
       var router = routington()
 
-      router.define('/a|b/c|d').should.have.length(4)
-      router.define('/a|b|c/d|e|f').should.have.length(9)
-      router.define('/1|4/2|3/6|2').should.have.length(8)
+      assert.equal(router.define('/a|b/c|d').length , 4)
+      assert.equal(router.define('/a|b|c/d|e|f').length, 9)
+      assert.equal(router.define('/1|4/2|3/6|2').length, 8)
   })
 
   it('should care for trailing slashes', function () {
     var router = routington()
 
     var routes1 = router.define('/asdf/')
-    routes1.should.have.length(1)
+    assert.equal(routes1.length, 1)
 
     var routes2 = router.define('/asdf')
-    routes2.should.have.length(1)
+    assert.equal(routes2.length, 1)
 
-    routes1[0].should.not.equal(routes2[0])
+    assert.notEqual(routes1[0], routes2[0])
   })
 
   it('should care for null or root paths', function () {
     var router = routington()
 
     var routes1 = router.define('')
-    routes1.should.have.length(1)
+    assert.equal(routes1.length, 1)
 
     var routes2 = router.define('/')
-    routes2.should.have.length(1)
+    assert.equal(routes2.length, 1)
 
-    routes1[0].should.not.equal(routes2[0])
+    assert.notEqual(routes1[0], routes2[0])
   })
 
   // To do:

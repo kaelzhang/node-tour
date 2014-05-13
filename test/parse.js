@@ -1,12 +1,12 @@
 var assert = require('assert')
 
-var routington = require('../')
+var routington = require('../index')
 
 var parse = routington.parse
 
 describe('Parse', function () {
   it('should parse a null string', function () {
-    parse('').should.eql({
+    assert.deepEqual(parse(''), {
       name: '',
       string: {
         '': true
@@ -16,7 +16,7 @@ describe('Parse', function () {
   })
 
   it('should parse a word string', function () {
-    parse('asdf').should.eql({
+    assert.deepEqual(parse('asdf'), {
       name: '',
       string: {
         'asdf': true
@@ -26,7 +26,7 @@ describe('Parse', function () {
   })
 
   it('should allow - and _ in strings', function () {
-    parse('a-b_-a').should.eql({
+    assert.deepEqual(parse('a-b_-a'), {
       name: '',
       string: {
         'a-b_-a': true
@@ -36,7 +36,7 @@ describe('Parse', function () {
   })
 
   it('should parse a named parameter', function () {
-    parse(':id').should.eql({
+    assert.deepEqual(parse(':id'), {
       name: 'id',
       string: {},
       regex: ''
@@ -44,7 +44,7 @@ describe('Parse', function () {
   })
 
   it('should parse a named parameter with strings', function () {
-    parse(':id(one|two)').should.eql({
+    assert.deepEqual(parse(':id(one|two)'), {
       name: 'id',
       string: {
         'one': true,
@@ -55,7 +55,7 @@ describe('Parse', function () {
   })
 
   it('should parse a named parameter with regexs', function () {
-    parse(':id(\\w{3,30}|[0-9a-f]{24})').should.eql({
+    assert.deepEqual(parse(':id(\\w{3,30}|[0-9a-f]{24})'), {
       name: 'id',
       string: {},
       regex: '\\w{3,30}|[0-9a-f]{24}'
@@ -63,7 +63,7 @@ describe('Parse', function () {
   })
 
   it('should parse a named parameter with regexs and strings as a regex', function () {
-    parse(':id(\\w{3,30}|asdf)').should.eql({
+    assert.deepEqual(parse(':id(\\w{3,30}|asdf)'), {
       name: 'id',
       string: {},
       regex: '\\w{3,30}|asdf'
@@ -71,7 +71,7 @@ describe('Parse', function () {
   })
 
   it('should parse pipe separated strings', function () {
-    parse('asdf|qwer').should.eql({
+    assert.deepEqual(parse('asdf|qwer'), {
       name: '',
       string: {
         'asdf': true,
@@ -88,7 +88,7 @@ describe('Parse', function () {
   })
 
   it('should parse unnamed regexs', function () {
-    parse('(\\w+|\\d+)').should.eql({
+    assert.deepEqual(parse('(\\w+|\\d+)'), {
       name: '',
       string: {},
       regex: '\\w+|\\d+'
@@ -136,7 +136,7 @@ describe('Parse', function () {
   })
 
   it('should support regular expressions with pipes', function () {
-    parse(':id([0-9a-f]{24}\\.[olmsta]\\.(jpg|png))').should.eql({
+    assert.deepEqual(parse(':id([0-9a-f]{24}\\.[olmsta]\\.(jpg|png))'), {
       name: 'id',
       string: {},
       regex: '[0-9a-f]{24}\\.[olmsta]\\.(jpg|png)'
@@ -144,7 +144,7 @@ describe('Parse', function () {
   })
 
   it('should parse strings with a `.` as a string', function () {
-    parse('blog.rss').should.eql({
+    assert.deepEqual(parse('blog.rss'), {
       name: '',
       string: {
         'blog.rss': true
@@ -152,7 +152,7 @@ describe('Parse', function () {
       regex: ''
     })
 
-    parse(':nav(blog.rss)').should.eql({
+    assert.deepEqual(parse(':nav(blog.rss)'), {
       name: 'nav',
       string: {
         'blog.rss': true
@@ -162,7 +162,7 @@ describe('Parse', function () {
   })
 
   it('should parse strings with a `-` as a string', function () {
-    parse('privacy-policy').should.eql({
+    assert.deepEqual(parse('privacy-policy'), {
       name: '',
       string: {
         'privacy-policy': true
@@ -170,7 +170,7 @@ describe('Parse', function () {
       regex: ''
     })
 
-    parse(':nav(privacy-policy|terms-of-service)').should.eql({
+    assert.deepEqual(parse(':nav(privacy-policy|terms-of-service)'), {
       name: 'nav',
       string: {
         'privacy-policy': true,

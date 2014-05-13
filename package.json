@@ -38,7 +38,9 @@
       "util": "~1.0.0"
     },
     "asyncDependencies": {},
-    "devDependencies": {},
+    "devDependencies": {
+      "assert": "~1.0.1"
+    },
     "scripts": {}
   }
 }
